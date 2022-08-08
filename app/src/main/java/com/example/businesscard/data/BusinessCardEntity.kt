@@ -10,5 +10,5 @@ data class BusinessCardEntity(
     val company : String,
     val phone : String,
     val email : String,
-    val color : String
+    var color : String?
 )

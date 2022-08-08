@@ -10,6 +10,6 @@ interface BusinessCardDao {
     @Query("SELECT * FROM BusinessCardEntity")
     fun getAll() : LiveData<List<BusinessCardEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(businessCardEntity: BusinessCardEntity)
 }

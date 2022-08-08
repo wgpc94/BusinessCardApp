@@ -5,9 +5,10 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.businesscard.App
+import com.example.businesscard.data.BusinessCardEntity
 import com.example.businesscard.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BusinessCardAdapter.OnUpdatedCard {
     private lateinit var binding: ActivityMainBinding
     private val mainViewModel : MainViewModel by viewModels {
         MainViewModelFactory((application as App).businessCardRepository)
@@ -22,9 +23,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getAllBusinessCards() {
-        mainViewModel.getAll().observe(this, {
-
-        })
+        mainViewModel.getAll().observe(this) {
+            binding.rvCards.adapter = BusinessCardAdapter(it, this)
+        }
     }
 
     private fun setListeners() {
@@ -32,5 +33,9 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AddBusinessCardActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun saveCard(businessCardEntity: BusinessCardEntity) {
+        mainViewModel.insert(businessCardEntity)
     }
 }
